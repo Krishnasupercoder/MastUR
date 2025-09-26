@@ -1,0 +1,98 @@
+<!-- templates/learnbits_admin.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>LearnBits Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body class="bg-gray-50 text-gray-900">
+  <div class="max-w-5xl mx-auto p-6">
+    <div class="flex items-center justify-between mb-6">
+      <h1 class="text-2xl font-bold">LearnBits Admin</h1>
+      <a href="{{ url_for('learnbits_feed') }}" class="underline">View public feed</a>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" class="bg-white rounded-2xl p-5 shadow border">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="text-sm font-medium">Title</label>
+          <input name="title" class="mt-1 w-full border rounded-lg p-2" placeholder="Hooky title (e.g., Python list vs tuple in 60s)" required>
+        </div>
+        <div>
+          <label class="text-sm font-medium">Media Type</label>
+          <select name="media_type" class="mt-1 w-full border rounded-lg p-2">
+            <option value="video">Video</option>
+            <option value="image">Image</option>
+            <option value="text">Text</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-sm font-medium">Attach Media (mp4, webm, jpg, png)</label>
+          <input type="file" name="media_file" class="mt-1 w-full border rounded-lg p-2">
+        </div>
+        <div>
+          <label class="text-sm font-medium">Duration (sec)</label>
+          <input type="number" name="duration_sec" class="mt-1 w-full border rounded-lg p-2" min="5" max="300" placeholder="e.g., 60">
+        </div>
+        <div>
+          <label class="text-sm font-medium">Course ID (optional)</label>
+          <input type="number" name="course_id" class="mt-1 w-full border rounded-lg p-2" placeholder="Link to a course">
+        </div>
+        <div class="flex items-center gap-2 mt-6">
+          <input type="checkbox" name="is_public" id="is_public" checked>
+          <label for="is_public">Public</label>
+        </div>
+        <div class="md:col-span-2">
+          <label class="text-sm font-medium">Caption (optional)</label>
+          <textarea name="caption" class="mt-1 w-full border rounded-lg p-2" rows="3" placeholder="One tip, a tiny challenge, or a CTA."></textarea>
+        </div>
+      </div>
+      <div class="mt-4">
+        <button class="px-4 py-2 rounded-lg bg-black text-white">Create LearnBit</button>
+      </div>
+    </form>
+
+    <h2 class="text-xl font-semibold mt-8 mb-3">All LearnBits</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {% for b in bits %}
+        <div class="bg-white rounded-xl p-3 border shadow-sm">
+          <div class="aspect-[9/16] overflow-hidden rounded-lg bg-black flex items-center justify-center">
+            {% if b.media_type == 'video' and b.media_url %}
+              <video src="{{ b.media_url }}" muted playsinline loop class="w-full h-full object-cover"></video>
+            {% elif b.media_type == 'image' and b.media_url %}
+              <img src="{{ b.media_url }}" class="w-full h-full object-cover" />
+            {% else %}
+              <div class="p-4 text-white text-center">{{ b.caption or b.title }}</div>
+            {% endif %}
+          </div>
+          <div class="mt-2">
+            <div class="flex items-center justify-between">
+              <p class="font-medium text-sm">{{ b.title }}</p>
+              <span class="text-xs px-2 py-0.5 rounded bg-gray-100 border">{{ b.media_type }}</span>
+            </div>
+            <p class="text-xs text-gray-500 mt-1">{{ b.created_at.strftime("%Y-%m-%d %H:%M") }}</p>
+            <div class="flex items-center justify-between mt-2">
+              <span class="text-xs">Public: <b>{{ 'Yes' if b.is_public else 'No' }}</b></span>
+              <button
+                class="text-xs underline"
+                onclick="toggleBit({{ b.id }})">{{ 'Hide' if b.is_public else 'Publish' }}</button>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <script>
+    async function toggleBit(id){
+      try{
+        const res = await fetch(`/learnbits/${id}/toggle`, { method: 'POST' });
+        location.reload();
+      }catch(e){ console.error(e); }
+    }
+  </script>
+</body>
+</html>

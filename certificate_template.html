@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      padding: 80px;
+      font-family: Georgia, serif;
+      background: #fff;
+      border: 10px solid #ddd;
+    }
+    .logo {
+      width: 100px;
+      margin-bottom: 20px;
+    }
+    .title {
+      font-size: 28px;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    .subtitle {
+      font-size: 20px;
+      margin-bottom: 40px;
+    }
+    .cert-name {
+      font-size: 32px;
+      font-weight: bold;
+      margin-top: 30px;
+    }
+    .course {
+      font-size: 22px;
+      margin: 10px 0;
+    }
+    .footer {
+      margin-top: 50px;
+      font-size: 16px;
+      color: #555;
+    }
+    .ai-verified {
+      border: 2px solid #000;
+      display: inline-block;
+      padding: 4px 12px;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <img src="{{ url_for('static', filename='mastur-logo.png') }}" class="logo" />
+  <div class="title">Certificate of Completion</div>
+  <div class="subtitle">This is to certify that</div>
+  <div class="cert-name">{{ name }}</div>
+  <div class="subtitle">has successfully completed the course:</div>
+  <div class="course">{{ course }}</div>
+  <div class="ai-verified">✅ AI VERIFIED</div>
+  <div class="footer">
+    <p>Issued on: {{ date }}</p>
+    <p>Certificate ID: {{ cert_id }}</p>
+  </div>
+</body>
+</html>

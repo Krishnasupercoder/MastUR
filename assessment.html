@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>{{ course.title }} Assessment | MastUR</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white min-h-screen flex flex-col justify-center items-center p-4">
+    <div class="w-full max-w-xl bg-black text-white rounded-2xl shadow-xl p-8">
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h2 class="text-2xl font-bold">{{ course.title }} Assessment</h2>
+                <div class="text-xs opacity-70 mt-1">Question {{ q_idx + 1 }} of {{ total }}</div>
+            </div>
+        </div>
+        <form method="POST" class="space-y-6">
+            <input type="hidden" name="q_idx" value="{{ q_idx }}">
+            <div class="mb-4">
+                <div class="text-lg font-semibold mb-4">{{ question }}</div>
+                {% for opt in options %}
+                <label class="flex items-center gap-3 bg-white text-black px-4 py-2 rounded-xl mb-2 cursor-pointer hover:bg-gray-100 transition">
+                    <input type="radio" name="selected" value="{{ opt }}" class="accent-black" required>
+                    <span>{{ opt }}</span>
+                </label>
+                {% endfor %}
+            </div>
+            <div class="flex gap-3 mt-4">
+                <button type="submit" name="action" value="submit" class="bg-green-700 hover:bg-green-800 px-6 py-2 rounded-xl font-bold">Submit</button>
+                <button type="submit" name="action" value="skip" class="bg-gray-500 hover:bg-gray-700 px-6 py-2 rounded-xl font-bold">Skip</button>
+            </div>
+        </form>
+        <div class="mt-6 text-xs text-gray-400">Your answers: {{ answers|length }}/{{ total }}</div>
+    </div>
+</body>
+</html>

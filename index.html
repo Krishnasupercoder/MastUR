@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>MastUR – Master Your Mind</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      background-color: #ffffff;
+      color: #111;
+    }
+    header {
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #ccc;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: #000;
+      text-decoration: none;
+    }
+    nav a {
+      text-decoration: none;
+      color: #000;
+      margin-left: 1.5rem;
+      font-weight: 500;
+    }
+    .hero {
+      text-align: center;
+      padding: 4rem 1rem;
+      background-color: #f5f5f5;
+    }
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+    .cta-btn {
+      background: #000;
+      color: #fff;
+      padding: 0.9rem 2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .highlight-section {
+      background: #fff;
+      padding: 4rem 1rem;
+      text-align: center;
+    }
+    .highlight-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .highlight-grid {
+      display: grid;
+      gap: 2rem;
+      max-width: 1000px;
+      margin: 2rem auto;
+    }
+    @media (min-width: 768px) {
+      .highlight-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    .highlight-card {
+      background: #f9fafb;
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      transition: transform 0.3s ease;
+    }
+    .highlight-card:hover {
+      transform: translateY(-5px);
+    }
+    .testimonial-section {
+      background: #f0fdf4;
+      padding: 4rem 1rem;
+      text-align: center;
+    }
+    .testimonial {
+      max-width: 700px;
+      margin: 1rem auto;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: #333;
+    }
+    .testimonial-name {
+      margin-top: 0.5rem;
+      font-weight: bold;
+      color: #0c4a6e;
+    }
+    .certificate-preview {
+      background: #fefce8;
+      padding: 4rem 1rem;
+      text-align: center;
+    }
+    .certificate-preview img {
+      max-width: 600px;
+      width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    .courses {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2rem;
+    }
+    .course-card {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 1.5rem;
+      max-width: 280px;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .course-card h2 {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+    }
+    .course-card p {
+      font-size: 1rem;
+      color: #333;
+    }
+    .course-card .btn {
+      display: inline-block;
+      margin-top: 1rem;
+      background: #000;
+      color: #fff;
+      padding: 0.6rem 1.4rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      color: #777;
+      border-top: 1px solid #eee;
+    }
+
+    .chatbot-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 9999px;
+  background-image: url("/static/MastUR Mascot.png"); /* Use mascot image here */
+  background-size: cover;
+  background-position: center;
+  border: 2px solid #000;
+  cursor: pointer;
+  z-index: 999;
+}
+
+.chat-popup {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 300px;
+  max-height: 400px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  display: none;
+  flex-direction: column;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  z-index: 999;
+}
+.chat-popup.active {
+  display: flex;
+}
+.chat-messages {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 1rem;
+}
+.chat-input {
+  border-top: 1px solid #eee;
+  display: flex;
+}
+.chat-input input {
+  flex-grow: 1;
+  padding: 0.5rem;
+  border: none;
+  outline: none;
+}
+.chat-input button {
+  background: black;
+  color: white;
+  padding: 0.5rem 1rem;
+}
+
+  </style>
+</head>
+<body onload="AOS.init();">
+  <header>
+    <a href="/" class="logo">
+      <img src="{{ url_for('static', filename='mastur-logo.png') }}" alt="MastUR Logo" height="132" width="132" />
+      MastUR
+    </a>
+    <nav>
+      <a href="/login">Login</a>
+      <a href="/register">Register</a>
+    </nav>
+  </header>
+
+  <section class="hero" data-aos="fade-down">
+    <h1>Master Your Mind. Master Your Future.</h1>
+    <p>Self-paced learning with GPT-4 intelligence – Courses start at <strong>$0</strong></p>
+    <a href="/register" class="cta-btn">Start Learning</a>
+  </section>
+
+  <!-- Feature Highlights -->
+  <section class="highlight-section" data-aos="fade-up">
+    <h2 class="highlight-title">Why Learn With MastUR?</h2>
+    <div class="highlight-grid">
+      <div class="highlight-card" data-aos="zoom-in">
+        <h3>🎯 AI-Powered Assessment</h3>
+        <p>Skip lessons you already know — thanks to GPT-4 powered topic mastery detection.</p>
+      </div>
+      <div class="highlight-card" data-aos="zoom-in" data-aos-delay="100">
+        <h3>📜 Verified Certificates</h3>
+        <p>Receive certificates upon course completion — secure, professional and exportable.</p>
+      </div>
+      <div class="highlight-card" data-aos="zoom-in" data-aos-delay="200">
+        <h3>💸 Free & Paid Courses</h3>
+        <p>Start learning today with free courses, and upgrade anytime at low cost.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Certificate Preview -->
+  <section class="certificate-preview" data-aos="fade-up">
+    <h2 class="text-2xl font-bold mb-4">Your Certificate of Completion</h2>
+    <p>Every course includes a downloadable certificate. Show off your skills with pride!</p>
+   <center> <img src="{{ url_for('static', filename='sample-certificate.jpg') }}" alt="Sample Certificate">
+   </center> <br><br>
+    <a href="/validate-certificate" class="cta-btn">Verify Certificate</a>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="testimonial-section" data-aos="fade-up">
+    <h2 class="text-2xl font-bold mb-4">What Our Learners Say</h2>
+    <div class="testimonial" data-aos="fade-right">“MastUR helped me fast-track my Python skills and earn a real certificate. The AI skipping part saved me so much time!”<div class="testimonial-name">– Krishna Chauhan</div></div>
+    <div class="testimonial" data-aos="fade-left" data-aos-delay="100">“The chatbot and personalized learning experience felt like magic. Better than Others, hands down.”<div class="testimonial-name">– Nathan Johnson</div></div>
+  </section>
+
+ 
+
+  <footer>
+    &copy; 2025 MastUR. All rights reserved.
+  </footer>
+
+<!-- 🔮 Chatbot Button -->
+<div class="chatbot-button" onclick="toggleChat()"></div>
+
+<!-- 💬 Chatbox -->
+<div class="chat-popup" id="chatPopup">
+  <div class="chat-messages" id="chatMessages"></div>
+  <div class="chat-input">
+    <input type="text" id="userInput" placeholder="Ask something..." />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+</div>
+
+<!-- 🧠 Chatbot Script -->
+<script>
+function toggleChat() {
+  document.getElementById("chatPopup").classList.toggle("active");
+}
+
+function sendMessage() {
+  const input = document.getElementById("userInput");
+  const msg = input.value.trim();
+  if (!msg) return;
+
+  appendMessage("You", msg);
+  input.value = "";
+
+  fetch("/chatbot", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message: msg })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.reply) {
+      appendMessage("MastUR AI", data.reply);
+    } else {
+      appendMessage("MastUR AI", "⚠️ Error occurred.");
+    }
+  });
+}
+
+function appendMessage(sender, text) {
+  const chat = document.getElementById("chatMessages");
+  const div = document.createElement("div");
+  div.innerHTML = `<strong>${sender}:</strong> ${text}`;
+  div.classList.add("mb-2", "text-sm");
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+</script>
+
+
+</body>
+</html>

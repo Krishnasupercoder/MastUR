@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lessons | {{ course.title }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="max-w-4xl mx-auto py-8">
+        <h1 class="text-2xl font-bold mb-4">Lessons for: {{ course.title }}</h1>
+        <a href="{{ url_for('admin_new_lesson', course_id=course.id) }}" class="mb-6 inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">+ Add Lesson</a>
+        <div class="bg-white rounded shadow p-4">
+            <table class="w-full">
+                <thead>
+                    <tr>
+                        <th class="py-2 px-3 text-left">Title</th>
+                        <th class="py-2 px-3">Video</th>
+                        <th class="py-2 px-3">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for lesson in lessons %}
+                    <tr class="border-t">
+                        <td class="py-2 px-3">{{ lesson.title }}</td>
+                        <td class="py-2 px-3">
+                            {% if lesson.video %}
+                                <a href="/uploads/{{ lesson.video }}" class="text-blue-600 hover:underline" target="_blank">View Video</a>
+                            {% else %}
+                                <span class="text-gray-500">No video</span>
+                            {% endif %}
+                        </td>
+                        <td class="py-2 px-3 flex gap-2">
+                            <a href="{{ url_for('admin_edit_lesson', lesson_id=lesson.id) }}" class="text-blue-600 hover:underline">Edit</a>
+                            <form method="post" action="{{ url_for('admin_delete_lesson', lesson_id=lesson.id) }}" onsubmit="return confirm('Delete lesson?')">
+                                <button type="submit" class="text-red-600 hover:underline">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="3" class="text-center text-gray-500 py-4">No lessons yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <a href="{{ url_for('admin_dashboard') }}" class="mt-6 inline-block text-gray-600 hover:underline">← Back to Dashboard</a>
+    </div>
+</body>
+</html>

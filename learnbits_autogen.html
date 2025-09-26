@@ -1,0 +1,51 @@
+<!-- templates/learnbits_autogen.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Auto-Generate LearnBits</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-900">
+  <div class="max-w-2xl mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-4">Auto‑Generate LearnBits</h1>
+    <p class="text-sm text-gray-600 mb-6">Creates short clips (first 45–60s) from lesson videos and saves them as LearnBits.</p>
+
+    <form method="POST" class="bg-white p-5 rounded-2xl border shadow space-y-4">
+      <div>
+        <label class="text-sm font-medium">Course ID (optional)</label>
+        <input name="course_id" type="number" class="mt-1 w-full border rounded-lg p-2" placeholder="Generate only for this course">
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="text-sm font-medium">Duration (seconds)</label>
+          <input name="duration_sec" type="number" min="20" max="180" value="60" class="mt-1 w-full border rounded-lg p-2">
+          <p class="text-xs text-gray-500 mt-1">Typical: 45–60s</p>
+        </div>
+        <div>
+          <label class="text-sm font-medium">Max lessons to process</label>
+          <input name="limit" type="number" min="1" max="100" value="10" class="mt-1 w-full border rounded-lg p-2">
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <input id="publish" name="publish" type="checkbox" checked>
+        <label for="publish">Publish immediately (public)</label>
+      </div>
+      <div class="pt-2">
+        <button class="px-4 py-2 rounded-lg bg-black text-white">Generate</button>
+        <a href="{{ url_for('learnbits_admin') }}" class="ml-3 underline">Back to LearnBits Admin</a>
+      </div>
+    </form>
+
+    <div class="mt-6 text-sm text-gray-600">
+      <h2 class="font-semibold">Notes</h2>
+      <ul class="list-disc ml-5 mt-2 space-y-1">
+        <li>Requires <code>ffmpeg</code> installed on the server (available on most hosts).</li>
+        <li>We trim from 0s; if you want smart hooks, we can add scene‑cut or audio‑based detection later.</li>
+        <li>Outputs are saved to <code>/static/uploads/</code> and linked as LearnBits.</li>
+      </ul>
+    </div>
+  </div>
+</body>
+</html>

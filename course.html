@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ course.title }} | MastUR</title>
+  <style>
+    body {
+      background: #111;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 2rem;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: #1a1a1a;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 24px rgba(255,255,255,0.07);
+    }
+    h1 { margin-bottom: 1rem; }
+    p { font-size: 1.1rem; }
+    .btn {
+      margin-top: 1.5rem;
+      padding: 0.8rem 1.6rem;
+      border: none;
+      font-size: 1rem;
+      background: white;
+      color: black;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background: #000;
+      color: #fff;
+      border: 1px solid white;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>{{ course.title }}</h1>
+    <p>{{ course.desc }}</p>
+    <p><strong>Price:</strong> ${{ course.price }}</p>
+    {% if enrolled %}
+  {% if enrolled %}
+  <a href="{{ url_for('assessment', course_id=course.id) }}"
+     class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">Start Course</a>
+{% else %}
+  <a href="/pay/{{ course.id }}" class="btn">Buy Now</a>
+{% endif %}
+
+   {% else %}
+      <a href="/pay/{{ course.id }}" class="btn">Buy Now</a>
+    {% endif %}
+  </div>
+</body>
+</html>

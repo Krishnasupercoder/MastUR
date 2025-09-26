@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Certificate Template | MastUR Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center">
+    <form method="post" class="bg-white p-8 rounded-lg shadow max-w-2xl w-full">
+        <h1 class="text-2xl font-bold mb-6">Certificate Template for <span class="text-indigo-700">{{ course.title }}</span></h1>
+        <label class="block mb-2 font-semibold">Certificate Template (HTML allowed)</label>
+        <textarea name="cert_template" rows="8" class="w-full mb-6 px-3 py-2 border rounded" required>{{ course.cert_template or '' }}</textarea>
+        <button type="submit" class="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700">Save Template</button>
+        <a href="{{ url_for('admin_courses') }}" class="ml-4 text-gray-600 hover:underline">Cancel</a>
+    </form>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!-- templates/learnbits_feed.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>LearnBits Feed</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <style>
+    html, body { height: 100%; }
+    .vh-95 { height: 95vh; }
+  </style>
+</head>
+<body class="bg-black text-white">
+  <div class="max-w-sm mx-auto">
+    <header class="flex items-center justify-between p-3">
+      <a href="javascript:history.back()" class="text-sm opacity-80">Back</a>
+      <h1 class="text-base font-semibold">LearnBits</h1>
+      <div class="w-8"></div>
+    </header>
+
+    <main class="space-y-6 pb-12">
+      {% if bits|length == 0 %}
+        <p class="text-center text-gray-300 mt-10">No LearnBits yet.</p>
+      {% endif %}
+      {% for b in bits %}
+        <article class="vh-95 snap-start rounded-2xl overflow-hidden border border-white/10">
+          {% if b.media_type == 'video' and b.media_url %}
+            <video src="{{ b.media_url }}" playsinline muted controls class="w-full h-full object-cover"></video>
+          {% elif b.media_type == 'image' and b.media_url %}
+            <img src="{{ b.media_url }}" class="w-full h-full object-cover" />
+          {% else %}
+            <div class="w-full h-full p-6 flex items-center justify-center bg-neutral-900">
+              <p class="text-lg text-center">{{ b.caption or b.title }}</p>
+            </div>
+          {% endif %}
+          <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/70 to-transparent">
+            <h2 class="font-semibold text-sm">{{ b.title }}</h2>
+            {% if b.caption %}<p class="text-xs text-white/80 mt-1 line-clamp-3">{{ b.caption }}</p>{% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </main>
+  </div>
+</body>
+</html>

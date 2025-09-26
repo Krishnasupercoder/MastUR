@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Courses | MastUR Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="max-w-5xl mx-auto p-6">
+        <header class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl font-bold">Manage Courses</h1>
+            <a href="{{ url_for('admin_course_form') }}" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">+ Add Course</a>
+        </header>
+        <table class="w-full bg-white rounded shadow">
+            <thead>
+                <tr class="bg-gray-200 text-left">
+                    <th class="py-2 px-4">Title</th>
+                    <th class="py-2 px-4">Price</th>
+                    <th class="py-2 px-4">Free?</th>
+                    <th class="py-2 px-4">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for course in courses %}
+                <tr class="border-t">
+                    <td class="py-2 px-4">{{ course.title }}</td>
+                    <td class="py-2 px-4">${{ course.price }}</td>
+                    <td class="py-2 px-4">{{ 'Yes' if course.is_free else 'No' }}</td>
+                    <td class="py-2 px-4">
+                        <a href="{{ url_for('admin_course_edit', course_id=course.id) }}" class="text-indigo-600 hover:underline mr-3">Edit</a>
+                        <a href="{{ url_for('admin_lessons', course_id=course.id) }}" class="text-green-600 hover:underline mr-3">Lessons</a>
+                        <a href="{{ url_for('admin_mcqs', course_id=course.id) }}" class="text-blue-600 hover:underline mr-3">MCQs</a>
+                        <a href="{{ url_for('admin_certificate', course_id=course.id) }}" class="text-purple-600 hover:underline mr-3">Certificate</a>
+                        <form method="post" action="{{ url_for('admin_course_delete', course_id=course.id) }}" class="inline" onsubmit="return confirm('Delete this course?')">
+                            <button class="text-red-600 hover:underline border-0 bg-transparent p-0 ml-3" type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" class="py-6 text-center text-gray-500">No courses yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="mt-8">
+            <a href="{{ url_for('admin_dashboard') }}" class="text-indigo-600 hover:underline">← Back to Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>

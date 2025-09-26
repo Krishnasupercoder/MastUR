@@ -1,0 +1,61 @@
+<!-- templates/_learnbits_carousel.html -->
+<div x-data="learnbitsCarousel()" class="w-full">
+  <div class="flex items-center justify-between mb-3">
+    <h2 class="text-lg font-semibold">LearnBits</h2>
+    <a href="{{ url_for('learnbits_feed') }}" class="text-sm underline">View all</a>
+  </div>
+
+  <div class="relative">
+    <button @click="scrollLeft"
+            class="absolute left-0 top-1/2 -translate-y-1/2 px-2 py-1 bg-black/60 text-white rounded">
+      ‹
+    </button>
+    <div x-ref="track"
+         class="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth pr-6 pl-8 py-2"
+         style="scrollbar-width:none;">
+      <!-- Items populated via fetch -->
+      <template x-for="b in bits" :key="b.id">
+        <div class="min-w-[220px] max-w-[220px] snap-start shrink-0">
+          <div class="rounded-2xl overflow-hidden border">
+            <template x-if="b.media_type === 'video' && b.media_url">
+              <video :src="b.media_url" playsinline muted loop class="w-full h-[320px] object-cover"></video>
+            </template>
+            <template x-if="b.media_type === 'image' && b.media_url">
+              <img :src="b.media_url" class="w-full h-[320px] object-cover" />
+            </template>
+            <template x-if="b.media_type === 'text'">
+              <div class="w-full h-[320px] p-4 bg-black text-white flex items-center justify-center">
+                <p class="text-sm" x-text="b.caption || b.title"></p>
+              </div>
+            </template>
+          </div>
+          <div class="mt-2">
+            <p class="text-sm font-medium line-clamp-2" x-text="b.title"></p>
+            <p class="text-xs text-gray-500 line-clamp-2" x-text="b.caption"></p>
+          </div>
+        </div>
+      </template>
+    </div>
+    <button @click="scrollRight"
+            class="absolute right-0 top-1/2 -translate-y-1/2 px-2 py-1 bg-black/60 text-white rounded">
+      ›
+    </button>
+  </div>
+</div>
+
+<script>
+function learnbitsCarousel() {
+  return {
+    bits: [],
+    async fetchBits() {
+      try {
+        const res = await fetch(`/api/learnbits?limit=20`);
+        this.bits = await res.json();
+      } catch (e) { console.error(e); }
+    },
+    scrollLeft() { this.$refs.track.scrollBy({ left: -260, behavior: 'smooth' }); },
+    scrollRight() { this.$refs.track.scrollBy({ left: 260, behavior: 'smooth' }); },
+    init() { this.fetchBits(); }
+  };
+}
+</script>

@@ -1,0 +1,39 @@
+<!-- templates/course_details.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>{{ course.title }} Details | MastUR</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans">
+  <div class="max-w-2xl mx-auto px-4 py-10">
+    <a href="{{ url_for('dashboard') }}" class="text-blue-600 hover:underline">&larr; Back to Dashboard</a>
+    <div class="mt-6 bg-white p-8 rounded-xl shadow-lg">
+      <h1 class="text-3xl font-bold mb-3">{{ course.title }}</h1>
+      <div class="mb-3">
+        <span class="px-2 py-1 bg-green-100 text-green-800 rounded text-xs">
+          {% if course.price == 0 %} Free {% else %} ${{ course.price }} {% endif %}
+        </span>
+      </div>
+      <p class="mb-6 text-gray-700">{{ course.details or course.desc }}</p>
+      <h2 class="text-xl font-semibold mb-2">Lessons:</h2>
+      <ul class="list-disc list-inside mb-6">
+        {% for lesson in course.lessons %}
+          <li>{{ lesson }}</li>
+        {% endfor %}
+      </ul>
+      <div class="mt-8">
+        {% if course.price == 0 %}
+          <form method="post" action="{{ url_for('enroll', course_id=course.id) }}">
+            <button class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition">Enroll Free</button>
+          </form>
+        {% else %}
+          <a href="{{ url_for('pay', course_id=course.id) }}" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">Enroll Now</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</body>
+</html>

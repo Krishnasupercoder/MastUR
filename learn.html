@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ course.title }} | Lesson {{ lesson + 1 }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script>
+      // Optional: Confirm before leaving if lesson is not complete
+      window.onbeforeunload = function() {
+        return null;
+      };
+    </script>
+</head>
+<body class="bg-gradient-to-br from-gray-100 to-gray-200 min-h-screen text-gray-900">
+    <div class="max-w-3xl mx-auto p-6">
+        <!-- Course Title and Progress Bar -->
+        <div class="flex flex-col md:flex-row justify-between items-center mb-8">
+            <div>
+                <h1 class="text-2xl md:text-3xl font-bold mb-2">{{ course.title }}</h1>
+                <p class="text-gray-600 text-sm md:text-base">Lesson {{ lesson + 1 }} of {{ total }}</p>
+            </div>
+            <div class="w-full md:w-64 mt-4 md:mt-0">
+                <div class="h-3 rounded-lg bg-gray-300 overflow-hidden shadow-inner">
+                    <div class="h-full rounded-lg bg-green-500 transition-all"
+                         style="width: {{ progress }}%"></div>
+                </div>
+                <div class="text-xs text-right text-gray-500 mt-1">{{ progress }}% complete</div>
+            </div>
+        </div>
+
+        <!-- Lesson Card -->
+        <div class="bg-white rounded-2xl shadow-lg p-8 mb-8 border border-gray-200">
+            <h2 class="text-xl font-semibold mb-4 text-gray-800 flex items-center">
+                <svg class="w-6 h-6 text-green-600 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2"></path>
+                </svg>
+                {{ lessons[lesson] }}
+            </h2>
+            <div class="mb-4 text-gray-700">
+                <!-- Optionally: Dynamic content per lesson -->
+                <p>
+                  {% if lessons[lesson] == "Introduction" %}
+                    Welcome to the course! This lesson will give you an overview of what you will learn.
+                  {% elif lessons[lesson] == "Variables & Data Types" %}
+                    In this lesson, you'll explore variables and data types in Python.
+                  {% elif lessons[lesson] == "Loops" %}
+                    This lesson covers for and while loops, and how to use them to repeat actions.
+                  {% elif lessons[lesson] == "Functions" %}
+                    Learn how to write and use functions to organize your code.
+                  {% else %}
+                    <!-- Default lesson description -->
+                    Let's get started with <b>{{ lessons[lesson] }}</b>!
+                  {% endif %}
+                </p>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="flex flex-col md:flex-row justify-between items-center gap-3 mt-8">
+                <div>
+                    {% if lesson > 0 %}
+                    <a href="{{ url_for('learn', course_id=course.id, lesson=lesson-1) }}"
+                       class="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500 transition mr-2">
+                        &larr; Previous
+                    </a>
+                    {% endif %}
+                </div>
+                <div>
+                    {% if lesson + 1 < total %}
+                    <a href="{{ url_for('learn', course_id=course.id, lesson=lesson+1) }}"
+                       class="bg-green-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-green-700 transition">
+                        Next &rarr;
+                    </a>
+                    {% else %}
+                    <a href="{{ url_for('generate_certificate', course_id=course.id) }}"
+                       class="bg-yellow-500 text-white px-6 py-2 rounded-lg font-bold hover:bg-yellow-600 transition">
+                        Finish &amp; Download Certificate
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Lessons Navigation (Mobile-friendly scroll) -->
+        <div class="bg-white rounded-xl shadow p-4 mb-6 border border-gray-100">
+            <div class="flex flex-wrap gap-2 justify-center md:justify-start">
+                {% for idx in range(total) %}
+                    <a href="{{ url_for('learn', course_id=course.id, lesson=idx) }}"
+                       class="px-4 py-2 rounded-lg text-sm font-semibold
+                       {% if lesson == idx %} bg-green-600 text-white {% else %} bg-gray-200 text-gray-800 hover:bg-green-200 {% endif %}
+                       transition">
+                        Lesson {{ idx + 1 }}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Back to Dashboard -->
+        <div class="text-center mt-10">
+            <a href="{{ url_for('dashboard') }}"
+               class="inline-block text-blue-700 hover:underline text-sm">
+                &larr; Back to Dashboard
+            </a>
+        </div>
+    </div>
+</body>
+</html>

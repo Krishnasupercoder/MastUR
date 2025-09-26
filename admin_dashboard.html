@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard | MastUR</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="max-w-5xl mx-auto py-8">
+        <h1 class="text-3xl font-bold mb-6">Admin Dashboard</h1>
+        <a href="{{ url_for('admin_course_form') }}" class="mb-4 inline-block bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700">+ Add Course</a>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {% for course in courses %}
+            <div class="p-6 bg-white rounded-xl shadow space-y-3">
+                <h2 class="text-xl font-bold">{{ course.title }}</h2>
+                <div class="text-sm text-gray-600">{{ course.description }}</div>
+                <div class="flex gap-2 mt-2 flex-wrap">
+                    <a href="{{ url_for('admin_edit_course', course_id=course.id) }}" class="text-blue-600 hover:underline">Edit</a>
+                    <form method="post" action="{{ url_for('admin_delete_course', course_id=course.id) }}" style="display:inline" onsubmit="return confirm('Delete course?')">
+                        <button type="submit" class="text-red-600 hover:underline">Delete</button>
+                    </form>
+                    <a href="{{ url_for('admin_lessons', course_id=course.id) }}" class="text-green-600 hover:underline">Lessons</a>
+                    <a href="{{ url_for('admin_mcqs', course_id=course.id, mode='entry') }}" class="text-purple-600 hover:underline">Entry MCQs</a>
+                    <a href="{{ url_for('admin_mcqs', course_id=course.id, mode='final') }}" class="text-indigo-600 hover:underline">Final MCQs</a>
+                </div>
+            </div>
+            <a href="{{ url_for('learnbits_autogen') }}" class="px-3 py-1.5 rounded-lg bg-black text-white">Auto‑Generate</a>
+
+            {% else %}
+            <p>No courses found.</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
